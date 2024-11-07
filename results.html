@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600&display=swap" rel="stylesheet">
+    <title>Purchase Order Summary</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <img src="https://cdn.prod.website-files.com/614319338322d2f96eb4dd96/62124643bd803240ec14b13a_Wuilt%20logo.svg" alt="Wuilt Logo" class="logo">
+            <h1>Purchase Order Summary</h1>
+        </header>
+
+        <div class="summary">
+            <h2>Company Information</h2>
+            <p><strong>Name:</strong> <span id="summaryCompanyName"></span></p>
+            <p><strong>Email:</strong> <span id="summaryCompanyEmail"></span></p>
+            <p><strong>Address:</strong> <span id="summaryAddress"></span></p>
+            <p><strong>City:</strong> <span id="summaryCity"></span></p>
+            <p><strong>Zip Code:</strong> <span id="summaryZipCode"></span></p>
+            <p><strong>Country:</strong> <span id="summaryCountry"></span></p>
+            <p><strong>State/Province:</strong> <span id="summaryState"></span></p>
+            
+            <h2>Vendor Information</h2>
+            <p><strong>Name:</strong> <span id="summaryVendorName"></span></p>
+            <p><strong>Email:</strong> <span id="summaryVendorEmail"></span></p>
+            <p><strong>Phone Number:</strong> <span id="summaryVendorPhone"></span></p>
+            <p><strong>Address:</strong> <span id="summaryVendorAddress"></span></p>
+            <p><strong>City:</strong> <span id="summaryVendorCity"></span></p>
+            <p><strong>Zip Code:</strong> <span id="summaryVendorZip"></span></p>
+            <p><strong>Country:</strong> <span id="summaryVendorCountry"></span></p>
+            <p><strong>State/Province:</strong> <span id="summaryVendorState"></span></p>
+
+            <h2>Purchase Order Information</h2>
+            <p><strong>Purchase Order Number:</strong> <span id="summaryPurchaseOrderNumber"></span></p>
+            <p><strong>Purchase Order Date:</strong> <span id="summaryPurchaseOrderDate"></span></p>
+            <p><strong>Delivery Date:</strong> <span id="summaryDeliveryDate"></span></p>
+            <p><strong>Shipping Method:</strong> <span id="summaryShippingMethod"></span></p>
+            <p><strong>Shipping Terms:</strong> <span id="summaryShippingTerms"></span></p>
+
+            <h2>Items Ordered</h2>
+            <table id="summaryItemTable">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Description</th>
+                        <th>Quantity</th>
+                        <th>Price (EGP)</th>
+                        <th>Amount (EGP)</th>
+                    </tr>
+                </thead>
+                <tbody id="itemList">
+                    <!-- Dynamic item rows will be inserted here -->
+                </tbody>
+            </table>
+
+            <h3>Summary</h3>
+            <p><strong>Subtotal:</strong> <span id="summarySubtotal"></span> EGP</p>
+            <p><strong>Tax:</strong> <span id="summaryTax"></span> EGP</p>
+            <p><strong>Total:</strong> <span id="summaryTotal"></span> EGP</p>
+        </div>
+
+        <script>
+            // Get data from localStorage
+            document.getElementById('summaryCompanyName').innerText = localStorage.getItem('companyName');
+            document.getElementById('summaryCompanyEmail').innerText = localStorage.getItem('companyEmail');
+            document.getElementById('summaryAddress').innerText = localStorage.getItem('address');
+            document.getElementById('summaryCity').innerText = localStorage.getItem('city');
+            document.getElementById('summaryZipCode').innerText = localStorage.getItem('zipCode');
+            document.getElementById('summaryCountry').innerText = localStorage.getItem('country');
+            document.getElementById('summaryState').innerText = localStorage.getItem('state');
+
+            document.getElementById('summaryVendorName').innerText = localStorage.getItem('vendorName');
+            document.getElementById('summaryVendorEmail').innerText = localStorage.getItem('vendorEmail');
+            document.getElementById('summaryVendorPhone').innerText = localStorage.getItem('vendorPhone');
+            document.getElementById('summaryVendorAddress').innerText = localStorage.getItem('vendorAddress');
+            document.getElementById('summaryVendorCity').innerText = localStorage.getItem('vendorCity');
+            document.getElementById('summaryVendorZip').innerText = localStorage.getItem('vendorZip');
+            document.getElementById('summaryVendorCountry').innerText = localStorage.getItem('vendorCountry');
+            document.getElementById('summaryVendorState').innerText = localStorage.getItem('vendorState');
+
+            document.getElementById('summaryPurchaseOrderNumber').innerText = localStorage.getItem('purchaseOrderNumber');
+            document.getElementById('summaryPurchaseOrderDate').innerText = localStorage.getItem('purchaseOrderDate');
+            document.getElementById('summaryDeliveryDate').innerText = localStorage.getItem('deliveryDate');
+            document.getElementById('summaryShippingMethod').innerText = localStorage.getItem('shippingMethod');
+            document.getElementById('summaryShippingTerms').innerText = localStorage.getItem('shippingTerms');
+
+            const itemCount = localStorage.getItem('itemCount');
+            let subtotal = 0;
+
+            for (let i = 1; i <= itemCount; i++) {
+                const item = localStorage.getItem(`item${i}`);
+                const desc = localStorage.getItem(`desc${i}`);
+                const quantity = localStorage.getItem(`quantity${i}`);
+                const price = localStorage.getItem(`price${i}`);
+                const amount = localStorage.getItem(`amount${i}`);
+
+                subtotal += parseFloat(amount);
+
+                const row = `<tr>
+                                <td>${item}</td>
+                                <td>${desc}</td>
+                                <td>${quantity}</td>
+                                <td>${parseFloat(price).toFixed(2)}</td>
+                                <td>${amount} EGP</td>
+                             </tr>`;
+                document.getElementById('itemList').innerHTML += row;
+            }
+
+            const taxRate = localStorage.getItem('taxRate') || 0;
+            const tax = subtotal * (taxRate / 100);
+            const total = subtotal + tax;
+
+            document.getElementById('summarySubtotal').innerText = subtotal.toFixed(2);
+            document.getElementById('summaryTax').innerText = tax.toFixed(2);
+            document.getElementById('summaryTotal').innerText = total.toFixed(2);
+        </script>
+    </div>
+</body>
+</html>

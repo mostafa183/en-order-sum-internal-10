@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600&display=swap" rel="stylesheet">
+    <title>Purchase Order Management</title>
+    <style>
+        body {
+  font-family: 'Cairo', sans-serif;
+  background-color: #F6FEFC; /* New background color for the body */
+  direction: ltr; /* Changed to LTR */
+  color: #003a2d; /* Dark Teal color from Wuilt logo */
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+  display: block;
+  margin: 0 auto 20px auto;
+  width: 100px;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: 600; /* Font weight 600 */
+  margin-bottom: 10px;
+  background-image: linear-gradient(123deg, var(--color1) 24%, var(--color2) 65%); /* Gradient background */
+}
+
+p {
+  font-size: 16px;
+  color: #667085; /* New color for paragraph text */
+  margin-bottom: 20px;
+}
+
+form {
+  margin-top: 20px;
+}
+
+.form-step {
+  margin-bottom: 30px;
+}
+
+.form-group {
+  display: inline-block;
+  width: 33%; /* Set 33% width for all form groups */
+  padding: 0 10px;
+  box-sizing: border-box;
+  margin-bottom: 15px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="number"],
+input[type="date"],
+select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+  color: #003a2d; /* Use dark teal for input text */
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  background-color: #00b187; /* Light green from Wuilt logo */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:hover {
+  background-color: #00866b; /* Darker green on hover */
+}
+
+.totals {
+  margin-top: 20px;
+}
+
+.totals div {
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.total {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+/* Buttons */
+.button-primary {
+  border: 1px solid var(--primary-border); /* Primary button border color */
+  background-color: var(--primary-bg); /* Primary button background color */
+  color: var(--primary-color); /* Primary button text color */
+  text-align: center;
+  transform-style: preserve-3d;
+  border-radius: 1000000px;
+  padding: 20px 40px 18px;
+  font-weight: 600;
+  line-height: 1em;
+  text-decoration: none;
+  transition: transform 0.3s, color 0.3s, border-color 0.3s, background-color 0.3s;
+  transform: translateZ(0.01px);
+}
+
+.button-secondary {
+  border: 1px solid var(--secondary-border); /* Secondary button border color */
+  color: var(--secondary-color); /* Secondary button text color */
+  text-align: center;
+  transform-style: preserve-3d;
+  background-color: transparent; /* Transparent background for secondary button */
+  border-radius: 100000px;
+  padding: 18px 40px;
+  line-height: 1.111em;
+  text-decoration: none;
+  transition: transform 0.3s, color 0.3s, background-color 0.3s;
+  transform: translateZ(0.01px);
+}
+
+/* Section Background */
+section {
+  background-color: #F0FDFA; /* New background color for sections */
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+@media screen and (max-width: 768px) {
+  .form-group {
+    width: 50%; /* On smaller screens, make fields 50% width */
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .form-group {
+    width: 100%; /* On mobile, make fields 100% width */
+  }
+}
+
+input[type="text"], input[type="number"], input[type="date"] {
+  width: calc(100% - 20px);
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+table {
+  width: 100%;
+  margin-bottom: 20px;
+  border-collapse: collapse;
+}
+
+table th, table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+.totals {
+  text-align: left; /* Changed to left alignment for LTR */
+  margin-bottom: 20px;
+}
+
+.totals div {
+  margin: 10px 0;
+}
+
+.submit-btn {
+  background-color: #008060;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.submit-btn:hover {
+  background-color: #005a40;
+}
+
+.vendor-info {
+  margin-top: 40px;
+}
+
+.vendor-info h2 {
+  text-align: center;
+  font-size: 22px;
+  margin-bottom: 20px;
+}
+
+.vendor-info .form-group {
+  display: inline-block;
+  width: 32%; /* Adjust width for inline form elements */
+  padding: 0 10px;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+}
+
+.vendor-info input[type="text"],
+.vendor-info input[type="email"],
+.vendor-info select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+@media screen and (max-width: 768px) {
+  .vendor-info .form-group {
+    width: 48%;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .vendor-info .form-group {
+    width: 100%;
+  }
+}
+
+.purchase-order-info {
+  margin-top: 40px;
+}
+
+.purchase-order-info h2 {
+  text-align: center;
+  font-size: 22px;
+  margin-bottom: 20px;
+}
+
+.purchase-order-info .form-group {
+  display: inline-block;
+  width: 32%; /* Adjust width for inline form elements */
+  padding: 0 10px;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+}
+
+.purchase-order-info .form-group.full-width {
+  width: 100%;
+}
+
+.purchase-order-info input[type="text"],
+.purchase-order-info input[type="date"],
+.purchase-order-info textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.purchase-order-info textarea {
+  height: 100px;
+}
+
+@media screen and (max-width: 768px) {
+  .purchase-order-info .form-group {
+    width: 48%;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .purchase-order-info .form-group {
+    width: 100%;
+  }
+}
+
+/* Result Page CSS Integration */
+
+.result-row {
+  display: block;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+
+.result-field {
+  box-sizing: border-box;
+  padding: 10px;
+  margin-bottom: 15px;
+  width: 50% !important; /* Default to 50% width on PC */
+}
+
+.result-field strong {
+  color: #00866b; /* Field label color */
+}
+
+@media screen and (min-width: 1024px) {
+  .result-field {
+    width: 50%; /* Ensures 50% width on larger screens */
+  }
+  .result-field.full-width {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .result-field {
+    width: 50%; /* Fields take 50% width on tablets */
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .result-field {
+    width: 100%; /* Fields take full width on mobile */
+  }
+}
+
+button {
+  background-color: #008060;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #005a40;
+}
+
+/* Section Titles and Lines Between Sections */
+
+.result-section-title {
+  font-size: 22px;
+  color: #003a2d; /* Dark teal */
+  margin-bottom: 15px;
+  border-bottom: 2px solid #00866b; /* Line below title */
+  padding-bottom: 10px;
+}
+
+.result-section {
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 2px dashed #ddd; /* Dashed line between sections */
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <img src="https://cdn.prod.website-files.com/614319338322d2f96eb4dd96/62124643bd803240ec14b13a_Wuilt%20logo.svg" alt="Wuilt Logo" class="logo">
+            <h1>Purchase Order Management</h1>
+            <p>Use our purchase order template to easily manage supplier transactions and track outstanding orders.</p>
+        </header>
+
+        <form id="purchaseOrderForm">
+            <div class="form-step">
+                <h2>Enter Your Company Information</h2>
+                <div class="form-group">
+                    <label for="companyName">Company Name</label>
+                    <input type="text" id="companyName" placeholder="Company Name" required>
+                </div>
+                <div class="form-group">
+                    <label for="companyEmail">Email</label>
+                    <input type="email" id="companyEmail" placeholder="Email" required>
+                </div>
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <input type="text" id="address" placeholder="Address" required>
+                </div>
+                <div class="form-group">
+                    <label for="city">City</label>
+                    <input type="text" id="city" placeholder="City" required>
+                </div>
+                <div class="form-group">
+                    <label for="zipCode">Zip Code</label>
+                    <input type="text" id="zipCode" placeholder="Zip Code" required>
+                </div>
+                <div class="form-group">
+                    <label for="country">Country</label>
+                    <select id="country" required>
+                        <option value="US">United States</option>
+                        <option value="EG">Egypt</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="state">State/Province</label>
+                    <input type="text" id="state" placeholder="State/Province" required>
+                </div>
+                <div class="form-group">
+                    <label><input type="checkbox" id="sameAddress"> Ship to the same address</label>
+                </div>
+            </div>
+
+            <div class="container vendor-info">
+                <h2>Enter Vendor Information</h2>
+                <div class="form-group">
+                    <label for="vendorName">Vendor Name</label>
+                    <input type="text" id="vendorName" placeholder="Vendor Name" required>
+                </div>
+                <div class="form-group">
+                    <label for="vendorEmail">Email</label>
+                    <input type="email" id="vendorEmail" placeholder="Email" required>
+                </div>
+                <div class="form-group">
+                    <label for="vendorPhone">Phone Number</label>
+                    <input type="text" id="vendorPhone" placeholder="Phone Number" required>
+                </div>
+                <div class="form-group">
+                    <label for="vendorAddress">Address</label>
+                    <input type="text" id="vendorAddress" placeholder="Address" required>
+                </div>
+                <div class="form-group">
+                    <label for="vendorCity">City</label>
+                    <input type="text" id="vendorCity" placeholder="City" required>
+                </div>
+                <div class="form-group">
+                    <label for="vendorZip">Zip Code</label>
+                    <input type="text" id="vendorZip" placeholder="Zip Code" required>
+                </div>
+                <div class="form-group">
+                    <label for="vendorCountry">Country</label>
+                    <select id="vendorCountry" required>
+                        <option value="US">United States</option>
+                        <option value="EG">Egypt</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="vendorState">State/Province</label>
+                    <input type="text" id="vendorState" placeholder="State/Province" required>
+                </div>
+            </div>
+
+            <div class="container purchase-order-info">
+                <h2>Enter Purchase Order Information</h2>
+                <div class="form-group">
+                    <label for="purchaseOrderNumber">Purchase Order Number</label>
+                    <input type="text" id="purchaseOrderNumber" placeholder="Purchase Order Number" required>
+                </div>
+                <div class="form-group">
+                    <label for="purchaseOrderDate">Purchase Order Date</label>
+                    <input type="date" id="purchaseOrderDate" value="2024-10-22" required>
+                </div>
+                <div class="form-group">
+                    <label for="deliveryDate">Delivery Date</label>
+                    <input type="date" id="deliveryDate" value="2024-10-22" required>
+                </div>
+                <div class="form-group">
+                    <label for="shippingMethod">Shipping Method</label>
+                    <input type="text" id="shippingMethod" placeholder="Shipping Method" required>
+                </div>
+                <div class="form-group full-width">
+                    <label for="shippingTerms">Shipping Terms</label>
+                    <textarea id="shippingTerms" placeholder="Shipping Terms" required></textarea>
+                </div>
+            </div>
+
+            <div class="container">
+                <h2>Enter Items You Wish to Order</h2>
+                <table id="itemTable">
+                    <tr>
+                        <td><input type="text" id="item1" placeholder="Item" required></td>
+                        <td><input type="text" id="desc1" placeholder="Description" required></td>
+                        <td><input type="number" id="quantity1" value="1" min="1" onchange="calculateTotal()" required></td>
+                        <td><input type="number" id="price1" value="0" min="0" onchange="calculateTotal()" required></td>
+                        <td><span id="amount1">0.00</span> EGP</td>
+                    </tr>
+                </table>
+
+                <button type="button" onclick="addItem()">Add Item</button>
+
+                <div>
+                    <label for="taxRate">Tax Rate:</label>
+                    <input type="number" id="taxRate" value="13" min="0" max="100" onchange="calculateTotal()"> %
+                </div>
+
+                <div>
+                    <label>Subtotal:</label> <span id="subtotal">0.00</span> EGP
+                </div>
+                <div>
+                    <label>Tax:</label> <span id="tax">0.00</span> EGP
+                </div>
+                <div>
+                    <label>Total:</label> <span id="total">0.00</span> EGP
+                </div>
+
+                <button type="submit">Submit</button>
+            </div>
+
+            <script>
+                let itemCount = 1;
+
+                function calculateTotal() {
+                    let subtotal = 0;
+                    const taxRate = document.getElementById('taxRate').value || 0.13;
+
+                    for (let i = 1; i <= itemCount; i++) {
+                        const quantity = document.getElementById(`quantity${i}`).value || 0;
+                        const price = document.getElementById(`price${i}`).value || 0;
+                        const amount = quantity * price;
+                        document.getElementById(`amount${i}`).innerText = amount.toFixed(2);
+                        subtotal += amount;
+                    }
+
+                    const tax = subtotal * (taxRate / 100);
+                    const total = subtotal + tax;
+
+                    document.getElementById('subtotal').innerText = subtotal.toFixed(2);
+                    document.getElementById('tax').innerText = tax.toFixed(2);
+                    document.getElementById('total').innerText = total.toFixed(2);
+                }
+
+                function addItem() {
+                    itemCount++;
+                    const table = document.getElementById('itemTable');
+                    const row = document.createElement('tr');
+
+                    row.innerHTML = 
+                        `<td><input type="text" id="item${itemCount}" placeholder="Item" required></td>
+                        <td><input type="text" id="desc${itemCount}" placeholder="Description" required></td>
+                        <td><input type="number" id="quantity${itemCount}" value="1" min="1" onchange="calculateTotal()" required></td>
+                        <td><input type="number" id="price${itemCount}" value="0" min="0" onchange="calculateTotal()" required></td>
+                        <td><span id="amount${itemCount}">0.00</span> EGP</td>`;
+                    table.appendChild(row);
+                }
+
+                document.getElementById('purchaseOrderForm').addEventListener('submit', function(event) {
+                    event.preventDefault();
+
+                    // Store company information
+                    localStorage.setItem('companyName', document.getElementById('companyName').value);
+                    localStorage.setItem('companyEmail', document.getElementById('companyEmail').value);
+                    localStorage.setItem('address', document.getElementById('address').value);
+                    localStorage.setItem('city', document.getElementById('city').value);
+                    localStorage.setItem('zipCode', document.getElementById('zipCode').value);
+                    localStorage.setItem('country', document.getElementById('country').value);
+                    localStorage.setItem('state', document.getElementById('state').value);
+
+                    // Store vendor information
+                    localStorage.setItem('vendorName', document.getElementById('vendorName').value);
+                    localStorage.setItem('vendorEmail', document.getElementById('vendorEmail').value);
+                    localStorage.setItem('vendorPhone', document.getElementById('vendorPhone').value);
+                    localStorage.setItem('vendorAddress', document.getElementById('vendorAddress').value);
+                    localStorage.setItem('vendorCity', document.getElementById('vendorCity').value);
+                    localStorage.setItem('vendorZip', document.getElementById('vendorZip').value);
+                    localStorage.setItem('vendorCountry', document.getElementById('vendorCountry').value);
+                    localStorage.setItem('vendorState', document.getElementById('vendorState').value);
+
+                    // Store purchase order information
+                    localStorage.setItem('purchaseOrderNumber', document.getElementById('purchaseOrderNumber').value);
+                    localStorage.setItem('purchaseOrderDate', document.getElementById('purchaseOrderDate').value);
+                    localStorage.setItem('deliveryDate', document.getElementById('deliveryDate').value);
+                    localStorage.setItem('shippingMethod', document.getElementById('shippingMethod').value);
+                    localStorage.setItem('shippingTerms', document.getElementById('shippingTerms').value);
+
+                    // Store items ordered
+                    localStorage.setItem('itemCount', itemCount);
+                    for (let i = 1; i <= itemCount; i++) {
+                        localStorage.setItem(`item${i}`, document.getElementById(`item${i}`).value);
+                        localStorage.setItem(`desc${i}`, document.getElementById(`desc${i}`).value);
+                        localStorage.setItem(`quantity${i}`, document.getElementById(`quantity${i}`).value);
+                        localStorage.setItem(`price${i}`, document.getElementById(`price${i}`).value);
+                        const amount = (document.getElementById(`quantity${i}`).value * document.getElementById(`price${i}`).value).toFixed(2);
+                        localStorage.setItem(`amount${i}`, amount);
+                    }
+                    localStorage.setItem('taxRate', document.getElementById('taxRate').value);
+
+                    // Redirect to results page
+                    window.location.href = 'results.html';
+                });
+            </script>
+        </form>
+    </div>
+</body>
+</html>
